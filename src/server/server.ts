@@ -26,7 +26,7 @@ app.use('*', (req: express.Request, res: express.Response)=> {
 })
 
 // global error handler
-app.use((err, req: express.Request, res: express.Response) => {
+app.use((err: Error, req: express.Request, res: express.Response) => {
   
 
   const defaultErr: Err = {
