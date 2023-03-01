@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 
-import userRouter from './routes/user';
+import userRouter from './routes/users';
 import authRouter from './routes/auth';
 import oauthRouter from './routes/oauth';
 import jobRouter from './routes/jobs';
@@ -41,7 +41,6 @@ app.use('*', (req: express.Request, res: express.Response)=> {
 
 // global error handler
 app.use((err: Error, req: express.Request, res: express.Response) => {
-
 
   const defaultErr: Err = {
     log: 'Express error handler caught unknown middleware error',

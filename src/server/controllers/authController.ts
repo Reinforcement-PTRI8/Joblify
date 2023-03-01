@@ -38,8 +38,7 @@ const authController = {
         const decoded = await jwt.verify(token, process.env.JWT_SECRET);
         const { id, user } = decoded;
         const response = await db.query(
-            `SELECT * FROM users
-            WHERE id=${id}`
+            `SELECT * FROM users WHERE id=${id}`
         );
 
         if (!response.rows.length) return next({
@@ -51,6 +50,23 @@ const authController = {
         res.locals.user = response.rows[0];
         return next();
     },
+    logout: async(req: Request, res: Response, next: NextFunction) => {
+        try {
+            res.clearCookie('jwt');
+            res.clearCookie('oauth');
+            res.locals.cookie = null;
+
+            return res.status(200).json({ status: 'success' });
+        } catch (err) {
+            return next({
+                log: 'Error while trying to logout',
+                status: 500,
+                message: {
+                    err: `Error in logout controller: ${err}`
+                },
+            });
+        };
+    }
 };
 
 export default authController;
