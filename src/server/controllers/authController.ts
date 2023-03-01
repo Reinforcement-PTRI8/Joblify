@@ -30,16 +30,18 @@ const authController = {
     verifyCookie: async(req: Request, res: Response, next: NextFunction) => {
         const { token } = req.cookies.jwt;
         
-        if (!token) {
-            res.locals.verified = false;
-            return next();
-        };
+        if (!token) return next({
+            log: 'User is not logged in',
+            status: 404,
+            message: {
+                err: 'Please log in first',
+            },
+        });
 
         const decoded = await jwt.verify(token, process.env.JWT_SECRET);
-        const { id, user } = decoded;
-        const response = await db.query(
-            `SELECT * FROM users WHERE id=${id}`
-        );
+        const { id, email } = decoded;
+
+        const response = await db.query(`SELECT first_name, last_name, email, occupation FROM users WHERE id=${id}`);
 
         if (!response.rows.length) return next({
             log: 'Error verifying user',
