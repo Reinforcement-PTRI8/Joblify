@@ -21,7 +21,7 @@ const usersController = {
 
         if (!occupation) occupation = 'Misc';
 
-        const hashedPassword = await bcrypt.has(password, 12);
+        const hashedPassword = await bcrypt.hash(password, 12);
         const params = [first_name, last_name, email, hashedPassword, occupation];
 
         const createUser = {
@@ -110,7 +110,7 @@ const usersController = {
                     err: 'Please provide a valid id',
                 },
             });
-            
+
             const user = await db.query(`SELECT * FROM users WHERE id=${id}`);
             res.locals.user = user;
             return next();
