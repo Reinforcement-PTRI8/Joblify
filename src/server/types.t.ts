@@ -4,4 +4,8 @@ export interface Err {
     message: {
         err: string,
     };
-}
+};
+
+export interface Db {
+    query: () => {};
+};

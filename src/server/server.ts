@@ -2,16 +2,28 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 
+import userRouter from './routes/user';
+import authRouter from './routes/auth';
+import oauthRouter from './routes/oauth';
+import jobRouter from './routes/jobs';
+
 import { Err } from './types.t';
-import * as userRoute from './routes/user';
 
 const app: express.Express = express();
 const PORT  = process.env.PORT || 3000;
 
+
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/', express.static(path.resolve(__dirname, '../../build')));
+
+// --- ROUTES ---//
+app.use('/auth', authRouter);
+app.use('/oauth', oauthRouter);
+app.use('users', userRouter);
+app.use('/jobs', jobRouter);
 
 //oauth route
 //regular signup
@@ -22,8 +34,6 @@ app.use('/', express.static(path.resolve(__dirname, '../../build')));
 //user update job stage
 //user view job stage/ visual
 //save 
-
-
 
 app.use('*', (req: express.Request, res: express.Response)=> {
   res.status(404).send('Sorry, not valid route');
