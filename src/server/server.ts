@@ -17,9 +17,17 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/', express.static(path.resolve(__dirname, '../../build')));
 
-// app.use('/backend', 
-// //backend logic
-// );
+//oauth route
+//regular signup
+//regular signin
+//user upload resume (google doc)
+//user upload cv
+//user submit job links
+//user update job stage
+//user view job stage/ visual
+//save 
+
+
 
 app.use('*', (req: express.Request, res: express.Response)=> {
   res.status(404).send('Sorry, not valid route');
@@ -27,7 +35,7 @@ app.use('*', (req: express.Request, res: express.Response)=> {
 
 // global error handler
 app.use((err: Error, req: express.Request, res: express.Response) => {
-  
+
 
   const defaultErr: Err = {
     log: 'Express error handler caught unknown middleware error',
