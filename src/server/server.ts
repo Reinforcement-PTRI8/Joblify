@@ -1,16 +1,12 @@
 import express from 'express';
 import path from 'path';
+import cookieParser from 'cookie-parser';
+
+import { Err } from './types.t';
+import * as userRoute from './routes/user';
 
 const app: express.Express = express();
 const PORT  = process.env.PORT || 3000;
-
-interface Err {
-    log: string;
-    status: number;
-    message: {
-        err: string,
-    };
-}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
