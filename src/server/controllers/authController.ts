@@ -7,7 +7,7 @@ const authController = {
         if (!res.locals.user) {
             res.locals.loggedIn = false;
             return next();
-        }
+        };
 
         try {
             const { id, email } = res.locals.user;

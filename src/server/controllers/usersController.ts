@@ -99,6 +99,29 @@ const usersController = {
             });
         };
     },
+    getUserById: async(req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { id } = req.params;
+
+            if (!id || typeof id !== 'number') return next({
+                log: 'Error requesting user by id',
+                status: 404,
+                messasge: {
+                    err: 'Please provide a valid id',
+                },
+            });
+            
+            const user = await db.query(`SELECT * FROM users WHERE id=${id}`);
+            res.locals.user = user;
+            return next();
+        } catch (err) {
+            return next({
+                log: 'Error occurred in get user by id middleware',
+                status: 500,
+                message: { err: err},
+            });
+        }
+    },
 };
 
 export default usersController;
