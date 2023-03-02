@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 
 const authController = {
     setCookie: async(req: Request, res: Response, next: NextFunction) => {
+        console.log('auth controller set cookie')
         if (!res.locals.user) {
             res.locals.loggedIn = false;
             return next();
@@ -14,7 +15,7 @@ const authController = {
             const token = jwt.sign({ id, email }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
             res.cookie('jwt', token, {
-                expires: new Date(Date.now() + 24 + 60 * 60 * 1000),
+                expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
             });
             
             res.locals.loggedIn = true;

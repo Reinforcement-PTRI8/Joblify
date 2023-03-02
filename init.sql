@@ -2,14 +2,35 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
-    email VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL,
-    occupation VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    occupation VARCHAR(30)
 );
+
+CREATE TYPE stage AS ENUM ('Applied', 'Phone Screen', 'Technical Interviews', 'System Design Interview', 'Offer');
 
 CREATE TABLE jobs (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users (id),
-    description VARCHAR(400) NOT NULL,
+    job_url VARCHAR(500) NOT NULL,
+    summary VARCHAR(500) NOT NULL,
+    interview_stage stage,
+    last_interaction DATE
+);
 
-)
+CREATE TABLE resumes (
+    id SERIAL PRIMARY KEY,
+    owner_id INTEGER REFERENCES users (id),
+    s3_filename VARCHAR(500) NOT NULL,
+    s3_url VARCHAR(500) NOT NULL,
+    last_modified DATE
+);
+
+CREATE TABLE cover_letters (
+    id SERIAL PRIMARY KEY,
+    owner_id INTEGER REFERENCES users (id),
+    s3_filename VARCHAR(500) NOT NULL,
+    s3_url VARCHAR(500) NOT NULL,
+    last_modified DATE
+);
+

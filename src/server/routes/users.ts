@@ -1,8 +1,10 @@
 import express from 'express';
 import usersController from '../controllers/usersController';
+import authController from '../controllers/authController';
 const router = express.Router();
 
-router.get('/signup', usersController.signup, (req, res) => {
+router.post('/signup', usersController.signup, authController.setCookie, (req, res) => {
+    console.log('user router post');
     return res.status(200).json({
         status: 'success',
         user: res.locals.user

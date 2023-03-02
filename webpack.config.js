@@ -57,7 +57,7 @@ module.exports = {
     historyApiFallback: true,
     hot: true,
     proxy: {
-      '/server': "http://localhost:3000"
+      '/': "http://localhost:3000"
     }
   }
 }
