@@ -3,8 +3,10 @@ CREATE TABLE users (
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(100) NOT NULL,
-    occupation VARCHAR(30)
+    password VARCHAR(100),
+    occupation VARCHAR(30),
+    access_token VARCHAR(1000),
+    refresh_token VARCHAR(1000)
 );
 
 CREATE TYPE stage AS ENUM ('Applied', 'Phone Screen', 'Technical Interviews', 'System Design Interview', 'Offer');

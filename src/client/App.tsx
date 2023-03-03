@@ -1,23 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import {Route, Routes, Link, Navigate} from "react-router-dom";
+import axios from 'axios';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import NavBar from './components/NavBar';
 
 const App = () => {
-    const oauthTest = async() => {
-      const url = '/oauth/signup'
-      console.log('OAuth Test Button');
-      await fetch(url, {
-        mode: 'cors',
-        headers: {
-          'Access-Control-Allow-Origin': '*'
-        }
-      })
-      .then(() => console.log('fetch request sent'));
-    };
+    const [loggedIn, setLoggedIn] = useState(false);
 
     return (
       <>
-        <div>Hello World</div>
-        <a href="http://localhost:3000/oauth/signup">Sign up with Google</a>
+        <Routes>
+          <Route path='/' element={<Login setLoggedIn={setLoggedIn}/>}/>
+          {loggedIn && 
+            <Route 
+              path='/home/*' 
+              element={
+                <>
+                  <NavBar/>
+                  <Routes>
+                    <Route path='/' element={<Home/>}/>
+                  </Routes>
+                </>
+            }/>
+            
+          } 
+        </Routes>     
       </>
     );
 };
