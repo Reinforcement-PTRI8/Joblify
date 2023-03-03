@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import { google } from 'googleapis';
 import axios from 'axios';
 // const url = require('url');
@@ -15,16 +14,19 @@ const oauth2Client = new OAuth2(
 
 const oauthController = {
     oauthSignup: async(req: Request, res: Response, next: NextFunction) => {
+        console.log('oauth sign up');
         const authUrl = oauth2Client.generateAuthUrl({
             access_type: 'offline',
             scope: ['email', 'profile'],
             include_granted_scopes: true,
+            redirect_uri: process.env.GOOGLE_REDIRECT_URL
           }); 
 
           res.redirect(authUrl);
     },
     
     oauthGetToken: async(req: Request, res: Response, next: NextFunction) => {
+        console.log('oauth get token');
         try{
             const { code } = req.query;
             const { tokens } = await oauth2Client.getToken(code.toString());
@@ -50,20 +52,31 @@ const oauthController = {
             const { access_token } = tokens;
             const params = [given_name, family_name, email, access_token];
      
-            const response = await db.query(`SELECT first_name FROM users WHERE email='${email}'`);
-            if(!response.rows.length) {
+            const user = await db.query(`SELECT first_name, last_name, email FROM users WHERE email='${email}'`);
+
+            if (user.rows.length) {
+                res.locals.user = user.rows[0];
+            } else {
                 const createUser = {
                     name: 'user-signup',
                     text: 'INSERT INTO users (first_name, last_name, email, access_token) VALUES ($1, $2, $3, $4) RETURNING id, first_name, last_name, email',
                     values: params,
                 };    
                 const newUser = await db.query(createUser);
-            } else {
-                const user = await db.query(`SELECT first_name, last_name, email FROM users WHERE email='${email}'`);
-                res.locals.user = user.rows[0];
+                if (!newUser.rows.length) return next({
+                    log: 'Error creating new user',
+                    status: 404,
+                    message: {
+                        err: 'Something went wrong creating new account',
+                    },
+                });
+
+                res.locals.user = newUser.rows[0];
             };
             
-            res.redirect('http://localhost:8080');
+            next();
+            res.status(200);
+            res.redirect('http://localhost:8080/');
         } catch (err) {
             console.log('Catch block: ', err);
             return next({

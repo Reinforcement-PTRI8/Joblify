@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import {Route, Routes, Link, Navigate} from "react-router-dom";
 import axios from 'axios';
 import Login from './pages/Login';
@@ -13,25 +12,29 @@ const App = () => {
 
     useEffect(() => {
       const cookies = document.cookie.split(';');
-      if (cookies.includes('jwt')) setLoggedIn(true);
+      console.log(cookies)
+      for (const cookie of cookies) {
+        if (cookie.startsWith('jwt')) setLoggedIn(true);
+      };
     }, []);
+
+    console.log(loggedIn);
 
     return (
       <div id='main-page'>
         <Routes>
-          <Route path='/' element={<Login setLoggedIn={setLoggedIn}/>}/>
+          {!loggedIn && <Route path='/' element={<Login setLoggedIn={setLoggedIn}/>}/>}
           {loggedIn && 
             <Route 
-              path='/home/*' 
+              path='/' 
               element={
                 <>
                   <NavBar/>
                   <Routes>
-                    <Route path='/' element={<Home/>}/>
+                    <Route path='*' element={<Home/>}/>
                   </Routes>
                 </>
             }/>
-            
           } 
         </Routes>     
       </div>
