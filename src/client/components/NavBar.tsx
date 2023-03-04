@@ -19,50 +19,50 @@ const btnStyle = {
   textAlign:"right",
   textTransform: 'unset',
   color: 'primary.main',
-  };
+};
 
-  const ButtonBar = () => {
+  
+
+const NavBar = () => {
 
     const [selected, setSelected] = useState(false);
 
-    const menuItems = [ "Overview", "Application Tracker"];
-    const menuRoutes = ["/overview", "/applications"];
+    const menuItems = [ "Home", "Application Tracker", 'Profile', 'Logout'];
+    const menuRoutes = ["/home", "/applications", "/profile", "/logout"];
 
     const handleClick = () => {
      setSelected(true);
-    }
+    };
 
     let selectedBorder = (selected)=>{
         let fill = selected
         if(fill) {
-            const btnStyle = {
-                minWidth: 150,
-                margin: "0px",
-                border: 5,
-                textAlign:"right",
-                textTransform: 'unset',
-                };
-        }
-  }
+          const btnStyle = {
+            minWidth: 150,
+            margin: "0px",
+            border: 5,
+            textAlign:"right",
+            textTransform: 'unset',
+            };
+        };
+    };
 
 
   const menuBtns = menuItems.map((ele, i)=>{
       return(
           <Button
-                  onClick={handleClick}
-                  variant="outlined"
-                  sx={btnStyle}
-                  key={i}
-                      >
-                          <Link
-                          to= {menuRoutes[i]}
-                          style={linkStyle}>{ele}
-                          </Link></Button>
+            onClick={handleClick}
+            variant="outlined"
+            sx={btnStyle}
+            key={i}>
+              <Link
+                to= {menuRoutes[i]}
+                style={linkStyle}>{ele}
+              </Link>
+          </Button>
       )
   })
-};
 
-const NavBar = () => {
   return (
     <Grid>
         <Stack
