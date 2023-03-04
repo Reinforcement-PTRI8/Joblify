@@ -18,4 +18,11 @@ router.get('/:id', usersController.getUserById, (req, res) => {
     });
 });
 
+router.patch('/:id', usersController.updateUserById, (req, res) => {
+    return res.status(200).json({
+        status: 'success',
+        user: res.locals.user
+    })
+})
+
 export default router;

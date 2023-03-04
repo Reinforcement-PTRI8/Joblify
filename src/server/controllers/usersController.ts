@@ -138,7 +138,7 @@ const usersController = {
 
             const updateUser = {
                 name: 'user-update',
-                text: 'UPDATE users (first_name, last_name, email, occupation) VALUES ($1, $2, $3, $4) RETURNING id, first_name, last_name, email, occupation',
+                text:  `UPDATE users SET first_name=$1, last_name=$2, email=$3, occupation=$4 WHERE id = ${id}`,
                 values: params
             }
 
