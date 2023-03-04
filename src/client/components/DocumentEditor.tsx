@@ -14,10 +14,7 @@ const DocumentEditor = () => {
   return (
     <div className='doc-editor'>
         <h1 className = 'file-manager'> Load a File for Viewing</h1>
-      {openPicker && <GoogleFilePicker setDocument={setDocument} />}
-      {openEditor ? 
-        <ExpandLess onClick={() => setEditor(false)}/>
-        : <ExpandMore onClick={() => setEditor(true)}/>}
+        <GoogleFilePicker setDocument={setDocument}/>
     </div>
   );
 }
