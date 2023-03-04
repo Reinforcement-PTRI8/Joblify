@@ -8,7 +8,7 @@ import '../styles/home.css';
 const Home = ({ id, firstName, lastName, email }) => {
   return (
     <div className="home-page">
-      <div id='room-page-info'>
+      <div id='home-page-info'>
         <h2>{`Welcome Back, ${firstName}!`}</h2>
       </div>
       <DocumentEditor/>
