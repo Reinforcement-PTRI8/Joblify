@@ -1,78 +1,39 @@
 import React, { useState } from 'react';
 import { Stack } from "@mui/system";
 import { Link } from "react-router-dom";
-import Button, { buttonClasses } from '@mui/material/Button';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
-const linkStyle = {
-  display: 'flex',
-  padding: "0px 0px 20px 0px",
-  textDecoration: "none",
-  height: '20px',
-  backgroundColor: 'none'
-};
+import '../styles/main.css';
 
-const btnStyle = {
-  minWidth: 150,
-  size: 'large',
-  margin: "0px",
-  textAlign:"right",
-  textTransform: 'unset',
-  color: 'primary.main',
-};
+const NavBar = ({ setLoggedIn }) => {
 
-  
-
-const NavBar = () => {
-
-    const [selected, setSelected] = useState(false);
-
-    const menuItems = [ "Home", "Application Tracker", 'Profile', 'Logout'];
-    const menuRoutes = ["/home", "/applications", "/profile", "/logout"];
-
-    const handleClick = () => {
-     setSelected(true);
+    const logout = async() => {
+      await fetch('/user/logout');
+      setLoggedIn(false);
     };
 
-    let selectedBorder = (selected)=>{
-        let fill = selected
-        if(fill) {
-          const btnStyle = {
-            minWidth: 150,
-            margin: "0px",
-            border: 5,
-            textAlign:"right",
-            textTransform: 'unset',
-            };
-        };
-    };
+    const menuItems = [ "Home", "Application Tracker", 'Profile'];
+    const menuRoutes = ["/home", "/applications", "/profile"];
 
-
-  const menuBtns = menuItems.map((ele, i)=>{
-      return(
-          <Button
-            onClick={handleClick}
-            variant="outlined"
-            sx={btnStyle}
-            key={i}>
-              <Link
-                to= {menuRoutes[i]}
-                style={linkStyle}>{ele}
-              </Link>
-          </Button>
-      )
-  })
+    const menuBtns = menuItems.map((ele, i)=> {
+        return(
+          <Link key={i} className='main-nav-btn' to= {menuRoutes[i]}>
+            <Button variant="text">
+                {ele}
+            </Button>
+          </Link>
+        );
+    });
 
   return (
-    <Grid>
-        <Stack
-        direction="row"
-        spacing={5}
-        marginLeft='33px'>
-            <Button sx={btnStyle}></Button>
-            {menuBtns}
-      </Stack>
-    </Grid>
+    <div className='main-nav'>
+      <p className='logo'>Jobl<span>if</span>y</p>
+      {menuBtns}
+      <Link className='main-nav-btn' to='/' id='logout-link'>
+        <Button variant='text' onClick={logout} id='logout-link' sx={{float: 'right'}}>Logout</Button>
+      </Link>
+    </div>
   );
 };
 

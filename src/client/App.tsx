@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Route, Routes, Link, Navigate} from "react-router-dom";
-import axios from 'axios';
+import { Route, Routes } from "react-router-dom";
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Application from './pages/Application';
@@ -28,7 +27,6 @@ const App = () => {
         setLastName(user.last_name);
         setEmail(user.email);
       }
-
     };
 
     useEffect(() => {
@@ -44,20 +42,22 @@ const App = () => {
               path='/*'
               element={
                 <>
-                  <NavBar/>
-                  <Routes>
-                    <Route path='/home' element={<Home
-                      id={id}
-                      firstName={firstName}
-                      lastName={lastName}
-                      email={email}/>}
-                      />
-                      <Route path='/applications' element={<Application
-                      id={id}
-                      firstName={firstName}
-                      lastName={lastName}
-                      email={email}/>}
-                      />
+                  <NavBar setLoggedIn={setLoggedIn}/>
+                  <Routes >
+                    <Route path='/home' element={
+                      <div id='main-container' style={{flex: 1}}>
+                        <Home
+                        id={id}
+                        firstName={firstName}
+                        lastName={lastName}
+                        email={email}/>
+                      </div>}/>
+                        <Route path='/applications' element={<Application
+                        id={id}
+                        firstName={firstName}
+                        lastName={lastName}
+                        email={email}/>}
+                        />
                   </Routes>
                 </>
             }/>

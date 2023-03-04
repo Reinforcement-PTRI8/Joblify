@@ -22,7 +22,7 @@
     color: #e22c29;
   }
   
-  #root, .app-container, #dashboard, #settings-container {
+  #root, .app-container, #main-page, #settings-container {
     height: 100%;
   }
   
@@ -44,7 +44,8 @@
   
   .main-nav {
     position: fixed;
-    width: 100%;
+    padding-left: 30px;
+    width: 95%;
     display: flex;
     align-items: center;
     background-color: lighten(rgba(255, 166, 0, 0.46), 35%);
