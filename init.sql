@@ -15,7 +15,8 @@ CREATE TABLE jobs (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users (id),
     job_url VARCHAR(500) NOT NULL,
-    summary VARCHAR(500) NOT NULL,
+    title VARCHAR(500) NOT NULL,
+    company_name VARCHAR(30) NOT NULL,
     interview_stage stage,
     last_interaction DATE
 );

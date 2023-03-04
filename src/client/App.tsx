@@ -41,7 +41,7 @@ const App = () => {
           {!loggedIn && <Route path='/' element={<Login setLoggedIn={setLoggedIn}/>}/>}
           {loggedIn &&
             <Route
-              path='/'
+              path='/*'
               element={
                 <>
                   <NavBar/>

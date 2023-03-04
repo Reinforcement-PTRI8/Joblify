@@ -38,7 +38,7 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-        },   
+        },
     ]
   },
   plugins: [
@@ -56,8 +56,9 @@ module.exports = {
     },
     historyApiFallback: true,
     hot: true,
-    proxy: {
-      '/': "http://localhost:3000"
-    }
+    proxy: [{
+      context:['/auth', '/oauth', '/users', '/jobs'],
+      target: 'http://localhost:3000',
+    }],
   }
 }
