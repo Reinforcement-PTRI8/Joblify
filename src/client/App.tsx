@@ -9,34 +9,53 @@ import './styles/main.css';
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
+    const [id, setId] = useState(null);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+
+    const verifyLogin = async() => {
+      const response = await fetch('/auth/verify');
+      const data = await response.json();
+      const { user } = data;
+
+      console.log('verifyUser: ', user);
+      if (user) {
+        setLoggedIn(true);
+        setId(user.id);
+        setFirstName(user.first_name);
+        setLastName(user.last_name);
+        setEmail(user.email);
+      }
+
+    };
 
     useEffect(() => {
-      const cookies = document.cookie.split(';');
-      console.log(cookies)
-      for (const cookie of cookies) {
-        if (cookie.startsWith('jwt')) setLoggedIn(true);
-      };
+      verifyLogin();
     }, []);
-
-    console.log(loggedIn);
 
     return (
       <div id='main-page'>
         <Routes>
           {!loggedIn && <Route path='/' element={<Login setLoggedIn={setLoggedIn}/>}/>}
-          {loggedIn && 
-            <Route 
-              path='/' 
+          {loggedIn &&
+            <Route
+              path='/'
               element={
                 <>
                   <NavBar/>
                   <Routes>
-                    <Route path='*' element={<Home/>}/>
+                    <Route path='*' element={<Home
+                      id={id}
+                      firstName={firstName}
+                      lastName={lastName}
+                      email={email}
+                      />}/>
                   </Routes>
                 </>
             }/>
-          } 
-        </Routes>     
+          }
+        </Routes>
       </div>
     );
 };

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 
-const Home = () => {
+const Home = ({ id, firstName, lastName, email }) => {
   return (
-    <div> 
-      <div>Joblify Home Page</div>
+    <div>
+      <div>{`Welcome, ${firstName}`}</div>
     </div>
   )
 }

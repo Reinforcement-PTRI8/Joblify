@@ -20,11 +20,11 @@ const oauthController = {
             scope: ['email', 'profile'],
             include_granted_scopes: true,
             redirect_uri: process.env.GOOGLE_REDIRECT_URL
-          }); 
+          });
 
           res.redirect(authUrl);
     },
-    
+
     oauthGetToken: async(req: Request, res: Response, next: NextFunction) => {
         console.log('oauth get token');
         try{
@@ -51,8 +51,8 @@ const oauthController = {
             const { given_name, family_name, email } = data;
             const { access_token } = tokens;
             const params = [given_name, family_name, email, access_token];
-     
-            const user = await db.query(`SELECT first_name, last_name, email FROM users WHERE email='${email}'`);
+
+            const user = await db.query(`SELECT id, first_name, last_name, email FROM users WHERE email='${email}'`);
 
             if (user.rows.length) {
                 res.locals.user = user.rows[0];
@@ -61,7 +61,7 @@ const oauthController = {
                     name: 'user-signup',
                     text: 'INSERT INTO users (first_name, last_name, email, access_token) VALUES ($1, $2, $3, $4) RETURNING id, first_name, last_name, email',
                     values: params,
-                };    
+                };
                 const newUser = await db.query(createUser);
                 if (!newUser.rows.length) return next({
                     log: 'Error creating new user',
@@ -73,10 +73,8 @@ const oauthController = {
 
                 res.locals.user = newUser.rows[0];
             };
-            
-            next();
-            res.status(200);
-            res.redirect('http://localhost:8080/');
+
+            return next();
         } catch (err) {
             console.log('Catch block: ', err);
             return next({
@@ -85,7 +83,7 @@ const oauthController = {
                 message: {
                     err: err,
                 },
-            });       
+            });
         };
     },
 };

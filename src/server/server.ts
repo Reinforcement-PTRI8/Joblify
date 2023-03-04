@@ -32,15 +32,6 @@ app.use('/oauth', oauthRouter);
 app.use('/users', userRouter);
 app.use('/jobs', jobsRouter);
 
-//oauth route
-//regular signup
-//regular signin
-//user upload resume (google doc)
-//user upload cv
-//user submit job links
-//user update job stage
-//user view job stage/ visual
-//save 
 
 app.use('*', (req: express.Request, res: express.Response) => {
   res.status(404).send('Sorry, not valid route');
