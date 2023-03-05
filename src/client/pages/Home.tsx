@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DocumentEditor from '../components/DocumentEditor';
+import DocumentDisplay from '../components/DocumentDisplay';
 
 import '../styles/main.css';
 import '../styles/home.css';
@@ -10,7 +10,7 @@ const Home = ({ id, firstName, lastName, email }) => {
       <div id='home-page-info'>
         <h2>{`Welcome Back, ${firstName}!`}</h2>
       </div>
-      <DocumentEditor/>
+      <DocumentDisplay/>
     </div>
   );
 }
