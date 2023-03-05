@@ -6,6 +6,7 @@ const util = require('util');
 
 import * as db from '../models/appModel';
 import { Request, Response, NextFunction } from 'express';
+import { access } from 'fs';
 
 const { OAuth2 } = google.auth;
 const oauth2Client = new OAuth2(
@@ -144,6 +145,34 @@ const oauthController = {
             console.log('Get access token catch: ', err);
             return next({
                 log: 'Error in getAccessToken controller',
+                status: 500,
+                message: {
+                    err: err
+                },
+            });
+        };
+    },
+    storeAccessToken: async(req: Request, res: Response, next: NextFunction) => {
+        const user = res.locals.user;
+        try {
+            const { id } = user;
+            const { access_token } = req.body;
+            
+            console.log('setAccessToken controller, ', id, access_token);
+            if (!access_token) return next({
+                log: 'Error trying to store access_token',
+                status: 404,
+                message: {
+                    err: 'Please provide a valid access token',
+                },
+            });
+
+            await db.query(`UPDATE users SET access_token='${access_token}' WHERE id=${id}`);
+            return next();
+        } catch(err) {
+            console.log('Store access token catch: ', err);
+            return next({
+                log: 'Error in storeAccessToken controller',
                 status: 500,
                 message: {
                     err: err

@@ -37,37 +37,42 @@ const DocumentDisplay = () => {
     const data = await response.json();
 
     let { access_token } = data;
-    if (access_token === undefined) access_token = 'test';
+    if (access_token === undefined) {
+      console.log('Getting token with gapi client');
 
-    await fetch('/oauh/storeAccessToken', {
+      await window.gapi.load('client', () => {
+        window.gapi.client.init({
+          apiKey: GOOGLE_API_KEY,
+          clientId: GOOGLE_CLIENT_ID,
+          discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/docs/v1/rest'],
+          scope: 'https://www.googleapis.com/auth/documents.readonly',
+          plugin_name: 'Joblify',
+        }).then(() => {
+          const user = window.gapi.auth2.getAuthInstance().currentUser.get();
+          if (user.hasGrantedScopes('https://www.googleapis.com/auth/documents.readonly')) {
+            access_token = user.getAuthResponse().access_token;
+          };
+        }).catch(err => console.log('Error in gapi client: ', err));
+      });
+    };
+
+    await fetch('/oauth/storeAccessToken', {
       method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
+      body: JSON.stringify({ access_token })
     });
 
+    console.log(access_token);
     return access_token;
   };
 
- 
+  const getDocumentContents = async() => {
+    const access_token = await getAccessToken();
+    console.log('Getting document contents ', access_token);
+
+  };
 
   useEffect(() => {
-
-    window.gapi.load('client', () => {
-      console.log('hello client loaded')
-      window.gapi.client.init({
-        apiKey: GOOGLE_API_KEY,
-        clientId: GOOGLE_CLIENT_ID,
-        discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/docs/v1/rest'],
-        scope: 'https://www.googleapis.com/auth/documents.readonly',
-        plugin_name: 'Joblify',
-      }).then(() => {
-        const user = window.gapi.auth2.getAuthInstance().currentUser.get();
-        if (user.hasGrantedScopes('https://www.googleapis.com/auth/documents.readonly')) {
-          console.log('Document display use effect: ', user.getAuthResponse().access_token);
-        }
-      }).catch(err => console.log('Error occured loading client: ', err));
-    });
+    getDocumentContents();
   }, [])
 
   return (

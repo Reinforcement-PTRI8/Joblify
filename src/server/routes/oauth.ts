@@ -15,6 +15,9 @@ router.get('/getToken',
     authController.verifyCookie,
     oauthController.getAccessToken);
 
+router.patch('/storeAccessToken',
+    authController.verifyCookie,
+    oauthController.storeAccessToken);
 
 
 export default router;
