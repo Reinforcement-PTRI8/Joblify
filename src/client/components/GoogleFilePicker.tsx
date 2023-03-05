@@ -25,7 +25,7 @@ const GoogleFilePicker = ({ setDocument, setDocumentURL }) => {
         const url = data.docs[0].url;
         const shareUrl = url.replace('drive_web', 'sharing');
 
-        setDocument(data.docs[0].name);
+        setDocument(data.docs[0].id);
         setDocumentURL(shareUrl);
       },
     });

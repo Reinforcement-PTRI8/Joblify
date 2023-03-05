@@ -1,6 +1,5 @@
 import { google } from 'googleapis';
 import axios from 'axios';
-// const url = require('url');
 
 import * as db from '../models/appModel';
 import { Request, Response, NextFunction } from 'express';
@@ -11,6 +10,11 @@ const oauth2Client = new OAuth2(
     process.env.GOOGLE_CLIENT_SECRET,
     process.env.GOOGLE_REDIRECT_URL
 );
+
+const docs = google.docs({
+    version: 'v1',
+    auth: oauth2Client,
+});
 
 const oauthController = {
     oauthSignup: async(req: Request, res: Response, next: NextFunction) => {
@@ -79,6 +83,34 @@ const oauthController = {
             console.log('Catch block: ', err);
             return next({
                 log: 'Error trying to get access code',
+                status: 500,
+                message: {
+                    err: err,
+                },
+            });
+        };
+    },
+    parseDocument: async(req: Request, res: Response, next: NextFunction) => {
+        const { documentId } = req.params;
+        console.log('Parse Document controller: ', documentId);
+        if (!documentId) return next({
+            log: 'Error in parse document controller',
+            status: 401,
+            message: {
+                err: 'Please send a valid document id',
+            },
+        });
+
+        try {
+            const response = await docs.documents.get({ documentId });
+            const text = await response.data.body.content.map(obj => obj.paragraph.elements.map(obj2 => obj2.textRun.content)).join('\n');
+
+            console.log('Parsed content: ', text);
+            return next();
+        } catch (err) {
+            console.log('Catch block: ', err);
+            return next({
+                log: 'Error occurred trying to parse google document',
                 status: 500,
                 message: {
                     err: err,
