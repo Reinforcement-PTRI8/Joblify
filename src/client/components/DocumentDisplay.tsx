@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import SelectedDocument from './SelectedDocument';
 import GoogleFilePicker from './GoogleFilePicker';
 import JobEntries from './JobEntries';
+import { getDialogContentTextUtilityClass } from '@mui/material';
 
 declare global {
   interface Window { gapi: any; }
@@ -61,19 +62,31 @@ const DocumentDisplay = () => {
       body: JSON.stringify({ access_token })
     });
 
-    console.log(access_token);
+    console.log('Final access token: ', access_token);
     return access_token;
   };
 
   const getDocumentContents = async() => {
-    const access_token = await getAccessToken();
-    console.log('Getting document contents ', access_token);
+    if (!documentId) return;
 
+    const access_token = await getAccessToken();
+    console.log('Getting document contents: ', documentId, access_token);
+
+    const response = await fetch(`https://docs.googleapis.com/v1/documents/${documentId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${access_token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+
+    console.log('Document content request result: ', data);
   };
 
   useEffect(() => {
-    getDocumentContents();
-  }, [])
+    if (documentId) getDocumentContents();
+  }, [documentId]);
 
   return (
     <>
