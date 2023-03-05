@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import Button from '@mui/material/Button';
 
 import SelectedDocument from './SelectedDocument';
@@ -6,7 +7,7 @@ import GoogleFilePicker from './GoogleFilePicker';
 import JobEntries from './JobEntries';
 
 const DocumentDisplay = () => {
-  const [document, setDocument] = useState('');
+  const [documentId, setDocumentId] = useState('');
   const [documentURL, setDocumentURL] = useState('');
   const [documentText, setDocumentText] = useState('');
   const [url1, setUrl1] = useState('');
@@ -24,23 +25,17 @@ const DocumentDisplay = () => {
     await clearUrls();
   };
 
-  const parseGoogleDoc = async() => {
-    if (!document.length) return;
-    await fetch(`/oauth/${document}`);
-  };
-
-  console.log('Document id: ', document);
   return (
     <>
         <div className='doc-editor'>
             <h1 className = 'file-manager'> Load a File for Viewing</h1>
-            <GoogleFilePicker setDocument={setDocument} setDocumentURL={setDocumentURL}/>
-            <Button variant='contained' onClick={parseGoogleDoc}>Parse Doc</Button>
+            <GoogleFilePicker setDocumentId={setDocumentId} setDocumentURL={setDocumentURL}/>
+            <Button variant='contained' onClick={() => console.log('clicked')}>Parse Doc</Button>
         </div>
         {documentURL &&
         <div className='docArea'>
           <SelectedDocument
-            document={document}
+            documentId={documentId}
             documentURL={documentURL}/>
           <div className='suggestions-container'>
             <JobEntries

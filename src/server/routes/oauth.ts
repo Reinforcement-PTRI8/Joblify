@@ -8,13 +8,15 @@ const router = express.Router();
 router.get('/signup', oauthController.oauthSignup);
 router.get('/redirect',
     oauthController.oauthGetToken,
+    oauthController.oauthSetUser,
     authController.setCookie, (req, res) => res.redirect('http://localhost:8080/'));
 
-router.get('/:documentId', 
-    oauthController.parseDocument, 
+router.get('/getToken',
+    authController.verifyCookie,
+    oauthController.getAccessToken,
     (req, res) => res.status(200).json({
         status: 'success',
-        body: res.locals.body,
+        access_token: res.locals.access_token
     }));
 
 

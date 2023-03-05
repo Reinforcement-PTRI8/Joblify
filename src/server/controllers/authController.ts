@@ -43,7 +43,7 @@ const authController = {
         console.log('checking jwt cookie:', decoded)
         const { id, email } = decoded;
 
-        const response = await db.query(`SELECT first_name, last_name, email, occupation FROM users WHERE id=${id}`);
+        const response = await db.query(`SELECT first_name, last_name, email, occupation, access_token, refresh_token FROM users WHERE id=${id}`);
 
         if (!response.rows.length) return next({
             log: 'Error verifying user',

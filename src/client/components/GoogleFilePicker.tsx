@@ -2,7 +2,7 @@ import React from 'react';
 import useDrivePicker from 'react-google-drive-picker';
 import Button from '@mui/material/Button';
 
-const GoogleFilePicker = ({ setDocument, setDocumentURL }) => {
+const GoogleFilePicker = ({ setDocumentId, setDocumentURL }) => {
 
   const [openPicker, authResponse] = useDrivePicker();
 
@@ -25,9 +25,9 @@ const GoogleFilePicker = ({ setDocument, setDocumentURL }) => {
         const url = data.docs[0].url;
         const shareUrl = url.replace('drive_web', 'sharing');
 
-        setDocument(data.docs[0].id);
+        setDocumentId(data.docs[0].id);
         setDocumentURL(shareUrl);
-      },
+      }
     });
   };
 
