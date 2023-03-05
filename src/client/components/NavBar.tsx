@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Stack } from "@mui/system";
 import { Link } from "react-router-dom";
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 
 import '../styles/main.css';
 

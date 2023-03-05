@@ -47,17 +47,19 @@ const App = () => {
                     <Route path='/home' element={
                       <div id='main-container' style={{flex: 1}}>
                         <Home
-                        id={id}
-                        firstName={firstName}
-                        lastName={lastName}
-                        email={email}/>
+                          id={id}
+                          firstName={firstName}
+                          lastName={lastName}
+                          email={email}/>
                       </div>}/>
-                        <Route path='/applications' element={<Application
-                        id={id}
-                        firstName={firstName}
-                        lastName={lastName}
-                        email={email}/>}
-                        />
+                    <Route path='/applications' element={
+                      <div id='main-container' style={{flex: 1}}>
+                        <Application
+                          id={id}
+                          firstName={firstName}
+                          lastName={lastName}
+                          email={email}/>
+                      </div>}/>
                   </Routes>
                 </>
             }/>

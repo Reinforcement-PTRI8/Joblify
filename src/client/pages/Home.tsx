@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import DocumentEditor from '../components/DocumentEditor';
 
 import '../styles/main.css';
-import '../styles/login.css';
 import '../styles/home.css';
 
 const Home = ({ id, firstName, lastName, email }) => {

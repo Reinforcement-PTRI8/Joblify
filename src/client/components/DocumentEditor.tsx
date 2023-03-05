@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 
+import SelectedDocument from './SelectedDocument';
 import GoogleFilePicker from './GoogleFilePicker';
 
 const DocumentEditor = () => {
-
-  const [openPicker, setPicker] = useState(false);
-  const [document, setDocument] = useState({});
-  const [openEditor, setEditor] = useState(true);
-
+  const [document, setDocument] = useState('');
+  const [documentURL, setDocumentURL] = useState('');
+  
+  
+  console.log(document);
   return (
-    <div className='doc-editor'>
-        <h1 className = 'file-manager'> Load a File for Viewing</h1>
-        <GoogleFilePicker setDocument={setDocument}/>
-    </div>
+    <>
+        <div className='doc-editor'>
+            <h1 className = 'file-manager'> Load a File for Viewing</h1>
+            <GoogleFilePicker setDocument={setDocument} setDocumentURL={setDocumentURL}/>
+        </div>
+        <div className='docArea'>
+            {documentURL &&
+              <SelectedDocument
+                document={document}
+                documentURL={documentURL}
+              />} 
+        </div>
+    </>
+    
   );
 }
 
