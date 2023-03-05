@@ -23,6 +23,7 @@ const Login = ({ setLoggedIn }) => {
         password,
         first_name: firstName,
         last_name: lastName,
+        occupation,
       }),
       headers: {
         'Content-Type': 'application/json',

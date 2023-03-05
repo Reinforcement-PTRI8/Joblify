@@ -33,7 +33,8 @@ const oauthController = {
         try{
             const { code } = req.query;
             const { tokens } = await oauth2Client.getToken(code.toString());
-            console.log('Access token: ', tokens.access_token, tokens.refresh_token);
+            console.log('Access token: ', tokens.access_token);
+            console.log('Refresh token: ', tokens.refresh_token);
 
             res.locals.tokens = tokens;
 
@@ -75,7 +76,8 @@ const oauthController = {
             const user = await db.query(`SELECT id, first_name, last_name, email FROM users WHERE email='${email}'`);
             console.log('oauth user sign up ', user);
             if (user.rows.length) {
-                await db.query(`UPDATE users SET access_token='${access_token}' refresh_token='${refresh_token}' WHERE id=${user.rows[0].id}`)
+                if (refresh_token !== undefined) await db.query(`UPDATE users SET access_token='${access_token}', refresh_token='${refresh_token}' WHERE id=${user.rows[0].id}`);
+                else await db.query(`UPDATE users SET access_token='${access_token}' WHERE id=${user.rows[0].id}`);
                 res.locals.user = user.rows[0];
             } else {
                 const createUser = {
@@ -108,33 +110,45 @@ const oauthController = {
         };
     },
     getDocument: async(req: Request, res: Response, next: NextFunction) => {
+        console.log('getDocument controller reached');
         const { documentId } = req.params;
-        const auth = await authenticate({
-            keyfilePath: path.join(__dirname, '../oauth2.keys.json'),
-            scopes: 'https://www.googleapis.com/auth/documents',
-          });
-        google.options({auth});
+        try {
+            const auth = await authenticate({
+                keyfilePath: path.join(__dirname, '../assets/oauth2.keys.json'),
+                scopes: 'https://www.googleapis.com/auth/documents',
+              });
     
-        const response = await docs.documents.get({
-          documentId: documentId,
-        });
-        console.log(util.inspect(response.data, false, 17));
-        return response.data;
+            google.options({auth});
+        
+            const response = await docs.documents.get({
+              documentId: documentId,
+            });
+            console.log(util.inspect(response.data, false, 17));
+            res.locals.data = response.data;
+            return next();
+        } catch(err) {
+            console.log('getDocument controller error: ', err);
+        }
+        
     },
     getAccessToken: async(req: Request, res: Response, next: NextFunction) => {
         const user = res.locals.user;
         try {
             const { access_token } = user;
-            if (access_token) {
-                return res.status(200).json({
+            
+            return res.status(200).json({
                     status: 'success',
                     access_token: access_token,
                 })
-            } else {
-                return next();
-            }
         } catch(err) {
             console.log('Get access token catch: ', err);
+            return next({
+                log: 'Error in getAccessToken controller',
+                status: 500,
+                message: {
+                    err: err
+                },
+            });
         };
     },
 };

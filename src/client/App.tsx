@@ -22,7 +22,7 @@ const App = () => {
       const data = await response.json();
       const { user } = data;
 
-      console.log('verifyUser: ', user);
+      // console.log('verifyUser: ', user);
       if (user) {
         setLoggedIn(true);
         setId(user.id);

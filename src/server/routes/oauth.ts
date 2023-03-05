@@ -13,11 +13,8 @@ router.get('/redirect',
 
 router.get('/getToken',
     authController.verifyCookie,
-    oauthController.getAccessToken,
-    (req, res) => res.status(200).json({
-        status: 'success',
-        access_token: res.locals.access_token
-    }));
+    oauthController.getAccessToken);
+
 
 
 export default router;
