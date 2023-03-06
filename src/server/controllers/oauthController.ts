@@ -1,12 +1,9 @@
 import { google } from 'googleapis';
-const { authenticate } = require('@google-cloud/local-auth');
 import axios from 'axios';
 const path = require('path');
-const util = require('util');
 
 import * as db from '../models/appModel';
 import { Request, Response, NextFunction } from 'express';
-import { access } from 'fs';
 
 const { OAuth2 } = google.auth;
 const oauth2Client = new OAuth2(
@@ -76,6 +73,7 @@ const oauthController = {
 
             const user = await db.query(`SELECT id, first_name, last_name, email FROM users WHERE email='${email}'`);
             console.log('oauth user sign up ', user);
+            
             if (user.rows.length) {
                 if (refresh_token !== undefined) await db.query(`UPDATE users SET access_token='${access_token}', refresh_token='${refresh_token}' WHERE id=${user.rows[0].id}`);
                 else await db.query(`UPDATE users SET access_token='${access_token}' WHERE id=${user.rows[0].id}`);
@@ -109,28 +107,6 @@ const oauthController = {
                 },
             });
         };
-    },
-    getDocument: async(req: Request, res: Response, next: NextFunction) => {
-        console.log('getDocument controller reached');
-        const { documentId } = req.params;
-        try {
-            const auth = await authenticate({
-                keyfilePath: path.join(__dirname, '../assets/oauth2.keys.json'),
-                scopes: 'https://www.googleapis.com/auth/documents',
-              });
-    
-            google.options({auth});
-        
-            const response = await docs.documents.get({
-              documentId: documentId,
-            });
-            console.log(util.inspect(response.data, false, 17));
-            res.locals.data = response.data;
-            return next();
-        } catch(err) {
-            console.log('getDocument controller error: ', err);
-        }
-        
     },
     getAccessToken: async(req: Request, res: Response, next: NextFunction) => {
         const user = res.locals.user;
