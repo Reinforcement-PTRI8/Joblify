@@ -180,6 +180,24 @@ const oauthController = {
             });
         };
     },
+    clearTokens: async(req: Request, res: Response, next: NextFunction) => {
+        const user = res.locals.user;
+        try {
+            const { id } = user;
+
+            await db.query(`UPDATE users SET access_token = NULL, refresh_token = NULL WHERE id=${id}`);
+            return res.status(200).json({
+                status: 'success',
+            });
+        } catch(err) {
+            console.log('Error occurred in clearTokens controller');
+            return next({
+                log: 'Error occurred while clearing tokens',
+                status: 500,
+                message: {err: err},
+            });
+        };
+    },
 };
 
 export default oauthController;

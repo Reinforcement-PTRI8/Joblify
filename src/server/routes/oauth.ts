@@ -19,5 +19,8 @@ router.patch('/storeAccessToken',
     authController.verifyCookie,
     oauthController.storeAccessToken);
 
+router.patch('/clearTokens',
+    authController.verifyCookie,
+    oauthController.clearTokens);
 
 export default router;
