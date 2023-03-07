@@ -26,7 +26,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const JobTable = ({ data }) => {
     const [rows, setRows] = useState([]);
-    const [selected, setSelected] = useState(new Set());
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -60,8 +59,6 @@ const JobTable = ({ data }) => {
       .then((res)=> console.log(res))
       .catch(err => console.log(err));
     };
-
-
 
 
 

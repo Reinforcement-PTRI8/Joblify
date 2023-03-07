@@ -5,8 +5,8 @@ import { Request, Response, NextFunction } from 'express';
 const jobController = {
 
   createJob: async(req: Request, res: Response, next: NextFunction) => {
-    let { job_url, title, company_name, interview_stage, last_interaction} = req.body;
-    let user_id = res.locals.user.id;
+    let { job_url, title, company_name, interview_stage, last_interaction} = req.body.data;
+    const user_id = req.cookies.userid;
     const params = [user_id, job_url, title, company_name, interview_stage, last_interaction];
     try {
         const createJob = {
@@ -87,7 +87,7 @@ const jobController = {
         let {jobId, interview_stage, last_interaction} = req.body.data;
         jobId = Number(jobId);
         last_interaction = new Date(last_interaction).toISOString().substring(0, 10);
-        console.log('checking update jobid:', jobId, typeof jobId)
+        // console.log('checking update jobid:', jobId, typeof jobId)
 
         if (!jobId || typeof jobId !== 'number') return next({
             log: 'Error updating job by id',

@@ -31,11 +31,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+
+const useForceUpdate= ()=> {
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue(value => value + 1);
+}
+
 const JobTableRow = ({ id, row, index, handleDelete}) => {
+
+  // const forceUpdate = useForceUpdate();
 
   const [stage, setStage] = useState('');
   // const [rowContent, setRowContent] = useState(row);
-
   const updateStage = (e) => {
     setStage(e.target.value);
   }
@@ -61,7 +68,7 @@ const JobTableRow = ({ id, row, index, handleDelete}) => {
     })
     .then((res)=> console.log(res))
     .catch(err => console.log(err));
-
+    // useForceUpdate();
   }
 
 

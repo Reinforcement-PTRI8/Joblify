@@ -3,7 +3,7 @@ import jobController from '../controllers/jobController';
 import authController from '../controllers/authController';
 const router = express.Router();
 
-router.post('/createJob', authController.verifyCookie,  jobController.createJob, (req, res) => {
+router.post('/createJob', jobController.createJob, (req, res) => {
   res.status(200).json({
       status: 'success',
       job: res.locals.job
