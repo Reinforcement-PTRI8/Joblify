@@ -129,6 +129,30 @@ const usersController = {
             });
         }
     },
+    updateUserById: async(req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { id } = req.params
+            let { first_name, last_name, email, occupation } = req.body;
+
+            const params = [first_name, last_name, email, occupation];
+
+            const updateUser = {
+                name: 'user-update',
+                text:  `UPDATE users SET first_name=$1, last_name=$2, email=$3, occupation=$4 WHERE id = ${id}`,
+                values: params
+            }
+
+            const updatedUsers = await db.query(updateUser);
+            res.locals.user = updatedUsers.rows[0];
+            return next();
+        } catch (err) {
+            return next({
+                log: 'Error occured in updating user by id middleware',
+                status: 500, 
+                message: {err: err}
+            })
+        }
+    }
 };
 
 export default usersController;
