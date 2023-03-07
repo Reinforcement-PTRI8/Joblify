@@ -1,5 +1,13 @@
 const path = require('path');
+const dotenv = require('dotenv');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const env = dotenv.config().parsed;
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next]);
+  return prev;
+}, {});
 
 module.exports = {
   entry: './src/client/index.tsx',
@@ -38,13 +46,14 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-        },   
+        },
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/client/index.html'
-    })
+    }),
+    new webpack.DefinePlugin(envKeys),
   ],
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".jsx"],
@@ -56,8 +65,9 @@ module.exports = {
     },
     historyApiFallback: true,
     hot: true,
-    proxy: {
-      '/server': "http://localhost:3000"
-    }
+    proxy: [{
+      context:['/auth', '/oauth', '/users', '/jobs'],
+      target: 'http://localhost:3000',
+    }],
   }
 }

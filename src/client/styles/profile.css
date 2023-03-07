@@ -1,0 +1,19 @@
+.profile-container {
+    margin: auto;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 100px;
+    row-gap: 20px;
+    width: 500px;
+    text-align: center;
+}
+
+.profile-container p {
+    font-size: 14px;
+    text-align: center;
+}
+
+.profile-container input {
+    background-color: lighten(#EEEEEE, 3%);
+}

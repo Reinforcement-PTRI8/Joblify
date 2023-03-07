@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+  }
+  a {
+    text-decoration: none;
+  }
+  
+  body {
+    width: 100vw;
+    height: 100vh;
+    background-color: lighten(rgba(255, 166, 0, 0.46), 35%);
+  }
+
+  button:hover {
+      background-color: lighten(rgba(255, 166, 0, 0.46), 20%);
+  }
+  
+  .warning, #delete-room-btn {
+    color: #e22c29;
+  }
+  
+  #root, .app-container, #main-page, #settings-container {
+    height: 100%;
+  }
+  
+  #login-details-container {
+    height: 100%;
+    min-width: 30%;
+    width: 30%;
+    max-width: 400px;
+  }
+  
+  #main-page {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-image: radial-gradient(white 20%);
+    background-position: 30px;
+    background-size: 15px 15px;
+  }
+  
+  .main-nav {
+    position: fixed;
+    margin-right: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: rgb(233, 193, 73);
+    height: 60px;
+    border-bottom: 1px solid lighten(rgba(255, 166, 0, 0.46), 27%);
+    z-index: 1;
+  }
+  .main-nav-btn {
+    margin: 0 10px;
+  }
+  
+  .logo {
+    font-family: 'Rubik', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    padding: 5px;
+    margin-left: 20px;
+  }
+  
+  button#logout-link-button{
+    color: #e22c29;
+  }
+  
+  #logout-link{
+    color: #e22c29;
+    flex: 1;
+    justify-self: end;
+  }
+  
+  #login-text {
+    text-align: center;
+  };
+  
+  #main-container {
+    min-height: 100%;
+    margin-top: 50px;
+    flex: 1;
+    display: flex;
+  }
+  
+  #SettingsMenu {
+    padding: 20px;
+  }
+  
+  .details-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    row-gap: 20px;
+    width: 500px;
+  }
