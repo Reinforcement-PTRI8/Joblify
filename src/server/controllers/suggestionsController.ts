@@ -1,7 +1,4 @@
 import axios from 'axios';
-const path = require('path');
-
-import * as db from '../models/appModel';
 import { Request, Response, NextFunction } from 'express';
 
 import { Configuration, OpenAIApi } from "openai";
@@ -20,8 +17,8 @@ const suggestionsController = {
         };
         // console.log('getSuggestions request body', req.body);
 
-        const { resumeText, jobUrls } = req.body.data;
-        if (!resumeText || !jobUrls.length) return next({
+        const { resumeText, jobDescriptions } = req.body.data;
+        if (!resumeText || !jobDescriptions.length) return next({
             log: 'No text provided in getting resume edits',
             status: 401,
             message: {
@@ -29,33 +26,33 @@ const suggestionsController = {
             },
         });
 
-        let defaultPrompt = 'Here is my resume. Here are links to some jobs that I am interested in: #JOBURLSHERE#. Please provide me with some suggestions on how to make my resume better and rank each job by relevance to my resume.'
         try {
-            // const response = await openai.createCompletion({
-            //     model: 'gpt-3.5-turbo',
-            //     prompt: defaultPrompt.replace('#JOBURLSHERE#', jobUrls.join(', ')) + resumeText,
-            //     temperature: 0,
-            //     stop: ["\n"],
-            // });
-            const jobUrlsToString = jobUrls.join(', ');
-            const headers = {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY2}`,
-            };
+            const jobUrlsToString = jobDescriptions.join(', ');
+            const input = resumeText;
+            const instruction = `Based on my resume above and these job descriptions: ${jobUrlsToString}. Please provide some edits and rank the positions by relevance based on my resume`;
 
-            const body = {
-                model: 'text-davinci-edit-001',
-                input: 'Random Resume Text',
-                instruction: `Here is my resume. Here are links to some jobs that I am interested in: ${jobUrlsToString}. Please provide some edits and rank the positions by relevance based on my resume`,
-            };
+            // const headers = {
+            //     'Content-Type': 'application/json',
+            //     'Authorization': `Bearer ${process.env.OPENAI_API_KEY2}`,
+            // };
 
-            const response = await axios.post('https://api.openai.com/v1/edits', body, { headers });
+            // const body = {
+            //     model: 'text-davinci-003',
+            //     prompt: input + instruction,
+            // };
 
-            // console.log('OpenAI response to request: ', response.data.choices);
+            // const response = await axios.post('https://api.openai.com/v1/completions', body, { headers });
+            const response = await openai.createChatCompletion({
+                model: 'gpt-3.5-turbo',
+                messages: [{
+                    'role': 'user',
+                    'content': input + instruction,
+                }]
+            });
 
             return res.status(200).json({
                 status: 'success',
-                suggestions: response.data.choices[0].text,
+                suggestions: response.data.choices[0].message,
             });
             
         } catch (err) {

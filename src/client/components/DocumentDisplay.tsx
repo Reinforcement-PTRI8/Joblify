@@ -14,27 +14,27 @@ const DocumentDisplay = () => {
   const [documentId, setDocumentId] = useState('');
   const [documentURL, setDocumentURL] = useState('');
   const [documentText, setDocumentText] = useState('');
-  const [url1, setUrl1] = useState('');
-  const [url2, setUrl2] = useState('');
-  const [url3, setUrl3] = useState('');
+  const [description1, setDescription1] = useState('');
+  const [description2, setDescription2] = useState('');
+  const [description3, setDescription3] = useState('');
 
   const GOOGLE_CLIENT_ID: string = typeof process.env.GOOGLE_CLIENT_ID === 'string' ? process.env.GOOGLE_CLIENT_ID : 'N/A';
   const GOOGLE_API_KEY: string = typeof process.env.GOOGLE_API_KEY === 'string' ? process.env.GOOGLE_API_KEY : 'N/A';
 
-  const clearUrls = async () => {
-    setUrl1('');
-    setUrl2('');
-    setUrl3('');
+  const clearDescriptions = async () => {
+    setDescription1('');
+    setDescription2('');
+    setDescription3('');
   };
 
   const generateSuggestions = async() => {
     //Function to send request to backend openAI endpoint
     if (!documentText) return;
-    if (!url1 && !url2 && !url3) return;
+    if (!description1 && !description2 && !description3) return;
 
     const body = {
       resumeText: documentText,
-      jobUrls: [url1, url2, url3],
+      jobDescriptions: [description1, description2, description3],
     };
 
     const response = await axios.post('/suggestions/resume', {
@@ -47,7 +47,7 @@ const DocumentDisplay = () => {
     });
 
     console.log('Generated Suggestions for resume: ', response);
-    await clearUrls();
+    await clearDescriptions();
   };
 
   const getAccessToken = async() => {
@@ -137,12 +137,12 @@ const DocumentDisplay = () => {
             documentURL={documentURL}/>
           <div className='suggestions-container'>
             <JobEntries
-              url1={url1}
-              url2={url2}
-              url3={url3}
-              setUrl1={setUrl1}
-              setUrl2={setUrl2}
-              setUrl3={setUrl3}
+              description1={description1}
+              description2={description2}
+              description3={description3}
+              setDescription1={setDescription1}
+              setDescription2={setDescription2}
+              setDescription3={setDescription3}
               generateSuggestions={generateSuggestions}/>
             <div>Sugestions Go Here</div>
             <div>Test Element</div>
