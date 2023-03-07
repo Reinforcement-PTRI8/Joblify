@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
+import axios from 'axios';
 import Button from '@mui/material/Button';
-
 import SelectedDocument from './SelectedDocument';
 import GoogleFilePicker from './GoogleFilePicker';
 import JobEntries from './JobEntries';
@@ -30,6 +29,24 @@ const DocumentDisplay = () => {
 
   const generateSuggestions = async() => {
     //Function to send request to backend openAI endpoint
+    if (!documentText) return;
+    if (!url1 && !url2 && !url3) return;
+
+    const body = {
+      resumeText: documentText,
+      jobUrls: [url1, url2, url3],
+    };
+
+    const response = await axios.post('/suggestions/resume', {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      data: body,
+    });
+
+    console.log('Generated Suggestions for resume: ', response);
     await clearUrls();
   };
 
