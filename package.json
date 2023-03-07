@@ -18,6 +18,11 @@
   },
   "homepage": "https://github.com/Reinforcement-PTRI8/Joblify#readme",
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.11",
+    "axios": "^1.3.4",
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

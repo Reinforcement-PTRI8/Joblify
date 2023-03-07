@@ -18,4 +18,6 @@ router.get('/:id', usersController.getUserById, (req, res) => {
     });
 });
 
+
+
 export default router;

@@ -17,7 +17,7 @@ const authController = {
             res.cookie('jwt', token, {
                 expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
             });
-            
+
             res.locals.loggedIn = true;
             return next();
         } catch (err) {
@@ -29,8 +29,8 @@ const authController = {
         };
     },
     verifyCookie: async(req: Request, res: Response, next: NextFunction) => {
-        const { token } = req.cookies.jwt;
-        
+        const token = req.cookies.jwt;
+
         if (!token) return next({
             log: 'User is not logged in',
             status: 404,
@@ -40,6 +40,7 @@ const authController = {
         });
 
         const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+        console.log('checking jwt cookie:', decoded)
         const { id, email } = decoded;
 
         const response = await db.query(`SELECT first_name, last_name, email, occupation FROM users WHERE id=${id}`);
