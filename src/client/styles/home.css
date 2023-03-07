@@ -1,0 +1,121 @@
+.home-page {
+  margin-top: 50px;
+  margin-left: 25px;
+  margin-right: 25px;
+  padding: 20px;
+  width: 100%;
+  background-color: lighten(#34B3F1, 30%);
+  border-radius: 4px;
+  height: 100%;
+}
+
+#room-page-info {
+  padding: 10px;
+}
+
+#room-page-info h2 {
+  padding: 5px 0;
+}
+
+.doc-editor {
+  position: relative;
+  min-height: auto;
+  height: 150px;
+  margin: 20px 30px;
+  padding: 20px;
+  border: 1px solid lighten(#34B3F1, 30%);
+  background-color: white;
+  overflow: hidden;
+  transition: all 0.5s;
+}
+
+.doc-editor[data-open='false'] {
+    height: 55px;
+}
+
+.file-picker input{  
+  width: 300px;
+}
+  
+.file-picker button {
+  margin: 0 20px;
+}
+
+.file-form{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-bottom: 10px;
+}
+
+.file-form select{
+  text-align-last: center;
+  width: 300px;
+  height: 30px;
+  border-radius: 4px;
+}
+
+.doc-container {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 30px;
+  padding-bottom: 50px;
+  border: 1px solid #34B3F1;
+  background-color: white;
+  width: 60%;
+  height: 100%;
+}
+  
+.doc-container iframe {
+  width: 100%;
+}
+
+.docArea {
+  display: flex;
+  margin: 0 0px;
+}
+
+h1.doc-header{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+  
+h1.file-manager{
+  font-size: 1em;
+  color: #34B3F1;
+  text-transform: uppercase;
+  margin-bottom: 1em;
+}
+
+.url-container {
+  margin: auto;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  row-gap: 20px;
+  width: 500px;
+  flex: 1;
+}
+
+.url-container p {
+  font-size: 14px;
+  text-align: center;
+}
+
+.url-container input {
+  background-color: lighten(#EEEEEE, 3%);
+}
+
+.suggestions-container {
+  width: 40%;
+  height:100%;
+  display: flex;
+  flex-direction: column;
+}
