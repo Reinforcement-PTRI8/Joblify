@@ -23,6 +23,7 @@ const Login = ({ setLoggedIn }) => {
         password,
         first_name: firstName,
         last_name: lastName,
+        occupation,
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -65,7 +66,7 @@ const Login = ({ setLoggedIn }) => {
       <TextField name="password" type='password' label="Password" onChange={(event) => setPassword(event.target.value)} />
       
       <Button onClick={login} variant="contained" id='auth-btn'>Login</Button>
-      <Button onClick={oauthLogin}>Log In With Google</Button>
+      <Button href="http://localhost:3000/oauth/signup">Log In With Google</Button>
       <p>{'Don\'t have an account?'} <span className='switch-auth' onClick={() => setSignup(true)}>Click here!</span></p>
     </div>
   );
@@ -89,7 +90,6 @@ const Login = ({ setLoggedIn }) => {
     <div> 
       <p className='logo' id='main-logo'>Welcome to Job<span>lif</span>y</p>
       {signup ? signupDetails : loginDetails}
-      
     </div>
   )
 }

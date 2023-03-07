@@ -15,6 +15,10 @@ const authController = {
             const token = jwt.sign({ id, email }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
             res.cookie('jwt', token, {
+                secure: false,
+                expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+            });
+            res.cookie('userid', id, {
                 expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
             });
 
@@ -29,8 +33,9 @@ const authController = {
         };
     },
     verifyCookie: async(req: Request, res: Response, next: NextFunction) => {
+        //login not getting back cookie
         const token = req.cookies.jwt;
-
+        console.log('token', token);
         if (!token) return next({
             log: 'User is not logged in',
             status: 404,
@@ -40,17 +45,18 @@ const authController = {
         });
 
         const decoded = await jwt.verify(token, process.env.JWT_SECRET);
-        console.log('checking jwt cookie:', decoded)
+        // console.log('checking jwt cookie:', decoded)
         const { id, email } = decoded;
 
-        const response = await db.query(`SELECT first_name, last_name, email, occupation FROM users WHERE id=${id}`);
+
+        const response = await db.query(`SELECT first_name, last_name, email, occupation, access_token, refresh_token FROM users WHERE id=${id}`);
 
         if (!response.rows.length) return next({
             log: 'Error verifying user',
             status: 401,
             message: { err: 'User not found' },
         });
-
+        console.log('verify user:', response.rows[0]);
         res.locals.user = response.rows[0];
         return next();
     },
