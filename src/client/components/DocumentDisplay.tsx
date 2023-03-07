@@ -79,21 +79,39 @@ const DocumentDisplay = () => {
         'Content-Type': 'application/json',
       },
     });
-    const data = await response.json();
+    const document = await response.json();
 
-    console.log('Document content request result: ', data);
+    console.log('Document content request result: ', document);
+
+    let resumeContents = '';
+    if (document.body) {
+      for (let i = 0; i < document.body.content.length; i++) {
+        const content = document.body.content[i];
+
+        if (content.paragraph) {
+          const { elements } = content.paragraph;
+          for (let j = 0; j < elements.length; j++) {
+            const element = elements[j];
+
+            if (element.textRun) resumeContents += element.textRun.content;
+          };
+        }
+      };
+    };
+    
+    setDocumentText(resumeContents);
   };
 
   useEffect(() => {
     if (documentId) getDocumentContents();
   }, [documentId]);
 
+  console.log('Current document text: ', documentText);
   return (
     <>
         <div className='doc-editor'>
             <h1 className = 'file-manager'> Load a File for Viewing</h1>
             <GoogleFilePicker setDocumentId={setDocumentId} setDocumentURL={setDocumentURL}/>
-            <Button variant='contained' onClick={getAccessToken}>Parse Doc</Button>
         </div>
         {documentURL &&
         <div className='docArea'>

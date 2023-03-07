@@ -12,6 +12,8 @@ import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
+import '../styles/job.css';
+
 const defaultField = {
   job_url: '',
   title: '',
@@ -95,75 +97,75 @@ const Application = ({ id, firstName, lastName, email }) => {
 }, [create])
 
   return (
-    <div>
-    <div>
-      <div>{`${firstName}, your job applications:`}</div>
-      {jobs.length > 0 &&
-      <JobTable
-        data = {jobs}
-      />
-      }
-    </div>
-    <div>
-    <Button variant="outlined" onClick={handleClickOpen}>
-      Create Job Application
-    </Button >
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>New Job Application</DialogTitle>
-      <DialogContent>
-        <TextField
-          autoFocus
-          margin="dense"
-          label="Job Title"
-          name = "title"
-          fullWidth
-          variant="standard"
-          onChange = {changeHandler}
+    <div className="job-container">
+      <div>
+        <div>{`${firstName}, your job applications:`}</div>
+        {jobs.length > 0 &&
+        <JobTable
+          data = {jobs}
         />
-         <TextField
-          autoFocus
-          margin="dense"
-          label= "Company Name"
-          name = "company_name"
-          fullWidth
-          variant="standard"
-          onChange = {changeHandler}
-        />
-         <TextField
-          autoFocus
-          margin="dense"
-          label="Job URL"
-          name ="job_url"
-          fullWidth
-          variant="standard"
-          onChange = {changeHandler}
-        />
-        <FormControl sx={{ s: 1, minWidth: 100, mt: 2 }}>
-                  <Select
-                    name = "interview_stage"
-                    value = "Applied"
-                    onChange = {changeHandler}
-                    // onChange={updateStage}
-                    displayEmpty
-                    inputProps={{ 'aria-label': 'Without label' }}
-                  >
-                    <MenuItem value="">
-                      <em>Interview Stage</em>
-                    </MenuItem>
-                    <MenuItem value={'Applied'}>Applied</MenuItem>
-                    <MenuItem value={'Phone Screen'}>Phone Screen</MenuItem>
-                    <MenuItem value={'Technical Interviews'}>Technical Interview</MenuItem>
-                    <MenuItem value={'System Design Interview'}>System Design Interview</MenuItem>
-                    <MenuItem value={'Offer'}>Offer</MenuItem>
-                  </Select>
-        </FormControl>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSubmitClose}>Submit</Button>
-      </DialogActions>
-    </Dialog>
-  </div>
+        }
+      </div>
+      <div>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Create Job Application
+        </Button >
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>New Job Application</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Job Title"
+              name = "title"
+              fullWidth
+              variant="standard"
+              onChange = {changeHandler}
+            />
+             <TextField
+              autoFocus
+              margin="dense"
+              label= "Company Name"
+              name = "company_name"
+              fullWidth
+              variant="standard"
+              onChange = {changeHandler}
+            />
+             <TextField
+              autoFocus
+              margin="dense"
+              label="Job URL"
+              name ="job_url"
+              fullWidth
+              variant="standard"
+              onChange = {changeHandler}
+            />
+            <FormControl sx={{ s: 1, minWidth: 100, mt: 2 }}>
+                <Select
+                  name = "interview_stage"
+                  value = "Applied"
+                  onChange = {changeHandler}
+                  // onChange={updateStage}
+                  displayEmpty
+                  inputProps={{ 'aria-label': 'Without label' }}
+                >
+                  <MenuItem value="">
+                    <em>Interview Stage</em>
+                  </MenuItem>
+                  <MenuItem value={'Applied'}>Applied</MenuItem>
+                  <MenuItem value={'Phone Screen'}>Phone Screen</MenuItem>
+                  <MenuItem value={'Technical Interviews'}>Technical Interview</MenuItem>
+                  <MenuItem value={'System Design Interview'}>System Design Interview</MenuItem>
+                  <MenuItem value={'Offer'}>Offer</MenuItem>
+                </Select>
+            </FormControl>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleSubmitClose}>Submit</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
   </div>
   )
 }
