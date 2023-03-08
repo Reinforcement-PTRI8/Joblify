@@ -32,12 +32,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 
-const useForceUpdate= ()=> {
-  const [value, setValue] = useState(0); // integer state
-  return () => setValue(value => value + 1);
+const setRowIndex= ()=> {
+  
 }
 
-const JobTableRow = ({ id, row, index, handleDelete}) => {
+const JobTableRow = ({ id, row, index, handleDelete, updateTargetRow}) => {
 
   // const forceUpdate = useForceUpdate();
 
@@ -66,7 +65,10 @@ const JobTableRow = ({ id, row, index, handleDelete}) => {
         last_interaction: updatedRow.last_interaction
       }
     })
-    .then((res)=> console.log(res))
+    .then((res) => {
+      console.log(res);
+      updateTargetRow(index, res.data.updatedJob.rows[0])
+    })
     .catch(err => console.log(err));
     // useForceUpdate();
   }

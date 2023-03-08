@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-
+import axios from 'axios';
 import Button from '@mui/material/Button';
-
 import SelectedDocument from './SelectedDocument';
 import GoogleFilePicker from './GoogleFilePicker';
 import JobEntries from './JobEntries';
-import { getDialogContentTextUtilityClass } from '@mui/material';
+import TextareaAutosize from '@mui/base/TextareaAutosize';
 
 declare global {
   interface Window { gapi: any; }
@@ -15,22 +14,41 @@ const DocumentDisplay = () => {
   const [documentId, setDocumentId] = useState('');
   const [documentURL, setDocumentURL] = useState('');
   const [documentText, setDocumentText] = useState('');
-  const [url1, setUrl1] = useState('');
-  const [url2, setUrl2] = useState('');
-  const [url3, setUrl3] = useState('');
+  const [description1, setDescription1] = useState('');
+  const [description2, setDescription2] = useState('');
+  const [description3, setDescription3] = useState('');
+  const [suggestions, setSuggestions] = useState('');
 
   const GOOGLE_CLIENT_ID: string = typeof process.env.GOOGLE_CLIENT_ID === 'string' ? process.env.GOOGLE_CLIENT_ID : 'N/A';
   const GOOGLE_API_KEY: string = typeof process.env.GOOGLE_API_KEY === 'string' ? process.env.GOOGLE_API_KEY : 'N/A';
 
-  const clearUrls = async () => {
-    setUrl1('');
-    setUrl2('');
-    setUrl3('');
+  const clearDescriptions = async () => {
+    setDescription1('');
+    setDescription2('');
+    setDescription3('');
   };
 
   const generateSuggestions = async() => {
     //Function to send request to backend openAI endpoint
-    await clearUrls();
+    if (!documentText) return;
+    if (!description1 && !description2 && !description3) return;
+
+    const body = {
+      resumeText: documentText,
+      jobDescriptions: [description1, description2, description3],
+    };
+
+    const response = await axios.post('/suggestions/resume', {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      data: body,
+    });
+    setSuggestions(response.data.suggestions.content);
+    console.log('Generated Suggestions for resume: ', response.data?.suggestions?.content);
+    await clearDescriptions();
   };
 
   const getAccessToken = async() => {
@@ -120,15 +138,23 @@ const DocumentDisplay = () => {
             documentURL={documentURL}/>
           <div className='suggestions-container'>
             <JobEntries
-              url1={url1}
-              url2={url2}
-              url3={url3}
-              setUrl1={setUrl1}
-              setUrl2={setUrl2}
-              setUrl3={setUrl3}
+              description1={description1}
+              description2={description2}
+              description3={description3}
+              setDescription1={setDescription1}
+              setDescription2={setDescription2}
+              setDescription3={setDescription3}
               generateSuggestions={generateSuggestions}/>
-            <div>Sugestions Go Here</div>
-            <div>Test Element</div>
+            <div className='edits-container'>
+              <TextareaAutosize
+                aria-label="minimum height"
+                minRows={4}
+                placeholder="Joblify suggestions on your resume..."
+                value = {suggestions}
+                style={{ width: '80%', marginLeft: '100px' }}
+              />
+            </div>
+            {/* <div>Test Element</div> */}
           </div>    
         </div>} 
     </>

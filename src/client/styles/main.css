@@ -97,3 +97,13 @@
     row-gap: 20px;
     width: 500px;
   }
+
+  .edits-container {
+    margin: auto;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 100px;
+    width: 100%;
+    text-align: center;
+}

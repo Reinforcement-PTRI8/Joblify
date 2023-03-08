@@ -7,6 +7,7 @@ import userRouter from './routes/users';
 import authRouter from './routes/auth';
 import oauthRouter from './routes/oauth';
 import jobsRouter from './routes/jobs';
+import suggestionsRouter from './routes/suggestions';
 
 import { Err } from './types.t';
 import { NextFunction } from 'webpack-dev-server';
@@ -32,7 +33,7 @@ app.use('/auth', authRouter);
 app.use('/oauth', oauthRouter);
 app.use('/users', userRouter);
 app.use('/jobs', jobsRouter);
-
+app.use('/suggestions', suggestionsRouter);
 
 app.use('*', (req: express.Request, res: express.Response) => {
   res.status(404).send('Sorry, not valid route');
