@@ -60,7 +60,16 @@ const JobTable = ({ data }) => {
       .catch(err => console.log(err));
     };
 
-
+    //function takes in targetIndex and data
+    //iterate through your row state
+    //create an empty array
+    const updateTargetRow = (targetIndex, data) => {
+      let newRows = [...rows];
+      for (let i = 0; i < newRows.length; i++) {
+        if (i === targetIndex) newRows[i] = data;
+      }
+      setRows(newRows);
+    }
 
     const pageChangeHandler = (event: unknown, page: number) => {
         if (page < 0) return;
@@ -96,7 +105,8 @@ const JobTable = ({ data }) => {
                             id={`${row.id}`}
                             row={row}
                             index={i}
-                            handleDelete = {handleDelete}/>
+                            handleDelete = {handleDelete}
+                            updateTargetRow = {updateTargetRow}/>
                     ))}
                 </TableBody>
             </Table>
