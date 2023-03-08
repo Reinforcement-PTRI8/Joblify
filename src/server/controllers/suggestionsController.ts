@@ -4,8 +4,8 @@ import { Request, Response, NextFunction } from 'express';
 import { Configuration, OpenAIApi } from "openai";
 
 const configuration = new Configuration({
-    organization: "org-LxbAkppB6j8WEzXVY91pfG4F",
-    apiKey: process.env.OPENAI_API_KEY,
+    organization: "org-TxyeUnG5lXrJH5JqDkgsrjBF",
+    apiKey: process.env.OPENAI_API_KEY2,
 });
 const openai = new OpenAIApi(configuration);
 
@@ -29,7 +29,7 @@ const suggestionsController = {
         try {
             const jobUrlsToString = jobDescriptions.join(', ');
             const input = resumeText;
-            const instruction = `Based on my resume above and these job descriptions: ${jobUrlsToString}. Please provide some edits and rank the positions by relevance based on my resume`;
+            const instruction = `Here are job descriptions I'm interested in: ${jobUrlsToString}. Please provide some suggestions on how to make my resume better and rank these jobs: ${jobUrlsToString} by relevance based on my resume`;
 
             // const headers = {
             //     'Content-Type': 'application/json',

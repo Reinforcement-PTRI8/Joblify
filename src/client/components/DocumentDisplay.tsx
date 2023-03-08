@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import SelectedDocument from './SelectedDocument';
 import GoogleFilePicker from './GoogleFilePicker';
 import JobEntries from './JobEntries';
-import { getDialogContentTextUtilityClass } from '@mui/material';
+import TextareaAutosize from '@mui/base/TextareaAutosize';
 
 declare global {
   interface Window { gapi: any; }
@@ -17,6 +17,7 @@ const DocumentDisplay = () => {
   const [description1, setDescription1] = useState('');
   const [description2, setDescription2] = useState('');
   const [description3, setDescription3] = useState('');
+  const [suggestions, setSuggestions] = useState('');
 
   const GOOGLE_CLIENT_ID: string = typeof process.env.GOOGLE_CLIENT_ID === 'string' ? process.env.GOOGLE_CLIENT_ID : 'N/A';
   const GOOGLE_API_KEY: string = typeof process.env.GOOGLE_API_KEY === 'string' ? process.env.GOOGLE_API_KEY : 'N/A';
@@ -45,8 +46,8 @@ const DocumentDisplay = () => {
       },
       data: body,
     });
-
-    console.log('Generated Suggestions for resume: ', response);
+    setSuggestions(response.data.suggestions.content);
+    console.log('Generated Suggestions for resume: ', response.data?.suggestions?.content);
     await clearDescriptions();
   };
 
@@ -144,8 +145,16 @@ const DocumentDisplay = () => {
               setDescription2={setDescription2}
               setDescription3={setDescription3}
               generateSuggestions={generateSuggestions}/>
-            <div>Sugestions Go Here</div>
-            <div>Test Element</div>
+            <div className='edits-container'>
+              <TextareaAutosize
+                aria-label="minimum height"
+                minRows={4}
+                placeholder="Joblify suggestions on your resume..."
+                value = {suggestions}
+                style={{ width: '80%', marginLeft: '100px' }}
+              />
+            </div>
+            {/* <div>Test Element</div> */}
           </div>    
         </div>} 
     </>
